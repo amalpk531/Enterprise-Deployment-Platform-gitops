@@ -3,27 +3,30 @@ replicaCount: 2
 
 image:
   repository: amalpk531/enterprise-app
-  tag: "25" # Jenkins updates this to BUILD_NUMBER
+  tag: "25" # Jenkins updates this automatically
   pullPolicy: Always
 
 ingress:
   enabled: true
   className: nginx
+
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    # Uncomment after cert-manager is installed
     # cert-manager.io/cluster-issuer: "letsencrypt-prod"
+
   hosts:
     - host: amalpk.qzz.io
       paths:
         - path: /
           pathType: Prefix
-      annotations:
-      nginx.ingress.kubernetes.io/ssl-redirect: "false"
-  tls:
-    - secretName: enterprise-app-tls
-      hosts:
-        - amalpk.qzz.io
+
+  # Uncomment after cert-manager is installed
+  # tls:
+  #   - secretName: enterprise-app-tls
+  #     hosts:
+  #       - amalpk.qzz.io
 
 config:
   NODE_ENV: production
