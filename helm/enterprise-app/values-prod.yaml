@@ -11,17 +11,19 @@ ingress:
   className: nginx
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
   hosts:
-    - host: enterprise-app.amalpk531.dev
+    - host: onecloud.qd.je
       paths:
         - path: /
           pathType: Prefix
+      annotations:
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"
   tls:
     - secretName: enterprise-app-tls
       hosts:
-        - enterprise-app.amalpk531.dev
+        - onecloud.qd.je
 
 config:
   NODE_ENV: production
