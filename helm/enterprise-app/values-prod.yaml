@@ -1,0 +1,47 @@
+# Production overrides for enterprise-app
+replicaCount: 2
+
+image:
+  repository: amalpk531/enterprise-app
+  tag: "1"  # Jenkins updates this to BUILD_NUMBER
+  pullPolicy: Always
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  hosts:
+    - host: enterprise-app.amalpk531.dev
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: enterprise-app-tls
+      hosts:
+        - enterprise-app.amalpk531.dev
+
+config:
+  NODE_ENV: production
+  PORT: "5000"
+  APP_NAME: "Enterprise Deployment Platform"
+
+secrets:
+  MONGO_URI: "mongodb://mongodb-prod:27017/enterprise_app"
+  JWT_SECRET: "REPLACE_WITH_PROD_SECRET"
+
+resources:
+  requests:
+    memory: "256Mi"
+    cpu: "250m"
+  limits:
+    memory: "512Mi"
+    cpu: "500m"
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 70

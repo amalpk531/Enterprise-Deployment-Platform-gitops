@@ -1,0 +1,63 @@
+# Default values for enterprise-app (used for dev / local template validation)
+replicaCount: 1
+
+image:
+  repository: amalpk531/enterprise-app
+  tag: latest
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+  hosts:
+    - host: enterprise-app-dev.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+config:
+  NODE_ENV: development
+  PORT: "5000"
+  APP_NAME: "Enterprise Deployment Platform"
+
+secrets:
+  MONGO_URI: "mongodb://mongodb:27017/enterprise_app"
+  JWT_SECRET: "dev-secret"
+
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "100m"
+  limits:
+    memory: "256Mi"
+    cpu: "250m"
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+
+livenessProbe:
+  path: /api/health
+  port: 8080
+  initialDelaySeconds: 30
+  periodSeconds: 20
+
+readinessProbe:
+  path: /api/health
+  port: 8080
+  initialDelaySeconds: 10
+  periodSeconds: 10

@@ -1,0 +1,26 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: enterprise-app-rules
+  namespace: monitoring
+spec:
+  groups:
+    - name: enterprise-app
+      rules:
+        - alert: HighCPUUsage
+          expr: rate(container_cpu_usage_seconds_total{namespace="enterprise-app-prod"}[5m]) > 0.8
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "High CPU usage detected in enterprise-app"
+            description: "Pod {{ $labels.pod }} has CPU usage above 80% for more than 5 minutes."
+
+        - alert: PodNotReady
+          expr: kube_pod_status_ready{namespace="enterprise-app-prod", condition="false"} == 1
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Pod not ready in enterprise-app"
+            description: "Pod {{ $labels.pod }} has been not ready for more than 5 minutes."

@@ -1,0 +1,25 @@
+global:
+  smtp_smarthost: "smtp.gmail.com:587"
+  smtp_from: "REPLACE_WITH_SENDER_GMAIL@gmail.com"
+  smtp_auth_username: "REPLACE_WITH_SENDER_GMAIL@gmail.com"
+  smtp_auth_password: "REPLACE_WITH_GMAIL_APP_PASSWORD"
+
+route:
+  receiver: "gmail-notifications"
+  group_by: ["alertname", "severity"]
+  group_wait: 10s
+  group_interval: 10s
+  repeat_interval: 1h
+
+receivers:
+  - name: "gmail-notifications"
+    email_configs:
+      - to: "REPLACE_WITH_RECIPIENT_EMAIL@example.com"
+        send_resolved: true
+        subject: "Enterprise Deployment Platform Alert"
+        body: |
+          {{ range .Alerts }}
+          Alert: {{ .Annotations.summary }}
+          Severity: {{ .Labels.severity }}
+          Description: {{ .Annotations.description }}
+          {{ end }}

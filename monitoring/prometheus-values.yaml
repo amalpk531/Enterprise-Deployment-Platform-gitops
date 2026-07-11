@@ -1,0 +1,57 @@
+prometheus:
+  prometheusSpec:
+    retention: 30d
+    scrapeInterval: 15s
+    evaluationInterval: 15s
+    additionalScrapeConfigs:
+      - job_name: "enterprise-app"
+        kubernetes_sd_configs:
+          - role: pod
+            namespaces:
+              names:
+                - enterprise-app-prod
+        relabel_configs:
+          - source_labels:
+              [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+            action: keep
+            regex: true
+          - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+            action: replace
+            target_label: __metrics_path__
+            regex: (.+)
+          - source_labels:
+              [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+            action: replace
+            regex: ([^:]+)(?::\d+)?;(\d+)
+            replacement: $1:$2
+            target_label: __address__
+
+alertmanager:
+  enabled: true
+  config:
+    global:
+      smtp_smarthost: "smtp.gmail.com:587"
+      smtp_from: "REPLACE_WITH_SENDER_GMAIL@gmail.com"
+      smtp_auth_username: "REPLACE_WITH_SENDER_GMAIL@gmail.com"
+      smtp_auth_password: "REPLACE_WITH_GMAIL_APP_PASSWORD"
+    route:
+      receiver: "gmail-notifications"
+      group_by: ["alertname", "severity"]
+      group_wait: 10s
+      group_interval: 10s
+      repeat_interval: 1h
+    receivers:
+      - name: "gmail-notifications"
+        email_configs:
+          - to: "REPLACE_WITH_RECIPIENT_EMAIL@example.com"
+            send_resolved: true
+            subject: "Enterprise Deployment Platform Alert"
+            text: "{{ range .Alerts }}{{ .Annotations.summary }}{{ end }}"
+
+grafana:
+  enabled: true
+  adminPassword: "admin123"
+  dashboards:
+    default:
+      enterprise-app-dashboard:
+        url: https://raw.githubusercontent.com/amalpk531/Enterprise-Deployment-Platform/main/monitoring/grafana/dashboard.json
