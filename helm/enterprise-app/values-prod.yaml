@@ -14,7 +14,7 @@ ingress:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     # cert-manager.io/cluster-issuer: "letsencrypt-prod"
   hosts:
-    - host: onecloud.qd.je
+    - host: amalpk.qzz.io
       paths:
         - path: /
           pathType: Prefix
@@ -23,7 +23,7 @@ ingress:
   tls:
     - secretName: enterprise-app-tls
       hosts:
-        - onecloud.qd.je
+        - amalpk.qzz.io
 
 config:
   NODE_ENV: production
