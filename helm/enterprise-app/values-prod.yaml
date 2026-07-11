@@ -3,7 +3,7 @@ replicaCount: 2
 
 image:
   repository: amalpk531/enterprise-app
-  tag: "1"  # Jenkins updates this to BUILD_NUMBER
+  tag: "25" # Jenkins updates this to BUILD_NUMBER
   pullPolicy: Always
 
 ingress:
