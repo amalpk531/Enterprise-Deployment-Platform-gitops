@@ -3,7 +3,7 @@ replicaCount: 2
 
 image:
   repository: amalpk531/enterprise-app
-  tag: "25" # Jenkins updates this automatically
+  tag: "27"
   pullPolicy: Always
 
 ingress:
