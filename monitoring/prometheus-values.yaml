@@ -54,4 +54,4 @@ grafana:
   dashboards:
     default:
       enterprise-app-dashboard:
-        url: https://raw.githubusercontent.com/amalpk531/Enterprise-Deployment-Platform/main/monitoring/grafana/dashboard.json
+        url: https://raw.githubusercontent.com/amalpk531/Enterprise-Deployment-Platform-gitops/main/monitoring/grafana/dashboard.json
