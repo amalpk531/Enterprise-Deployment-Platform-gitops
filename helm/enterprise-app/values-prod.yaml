@@ -3,7 +3,7 @@ replicaCount: 2
 
 image:
   repository: amalpk531/enterprise-app
-  tag: "30"
+  tag: "31"
   pullPolicy: Always
 
 ingress:
