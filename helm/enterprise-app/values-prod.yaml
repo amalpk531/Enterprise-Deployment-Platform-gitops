@@ -39,6 +39,7 @@ externalSecrets:
   serviceAccountName: external-secrets-sa
   region: ap-south-1
   remoteKey: enterprise-app/prod
+  iamRoleArn: "arn:aws:iam::659828096688:role/eksctl-enterprise-deployment-platform-prod-ad-Role1-jrD7goqsObT8"
 
 resources:
   requests:
