@@ -50,8 +50,20 @@ alertmanager:
 
 grafana:
   enabled: true
-  adminPassword: "admin123"
+  adminPassword: ""
   dashboards:
     default:
       enterprise-app-dashboard:
         url: https://raw.githubusercontent.com/amalpk531/Enterprise-Deployment-Platform-gitops/main/monitoring/grafana/dashboard.json
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+        - name: 'default'
+          orgId: 1
+          folder: ''
+          type: file
+          disableDeletion: false
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/default
