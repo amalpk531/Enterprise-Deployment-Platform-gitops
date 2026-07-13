@@ -33,9 +33,12 @@ config:
   PORT: "5000"
   APP_NAME: "Enterprise Deployment Platform"
 
-secrets:
-  MONGO_URI: "mongodb://mongodb-prod:27017/enterprise_app"
-  JWT_SECRET: "REPLACE_WITH_PROD_SECRET"
+externalSecrets:
+  enabled: true
+  secretStoreName: aws-secretsmanager
+  serviceAccountName: external-secrets-sa
+  region: ap-south-1
+  remoteKey: enterprise-app/prod
 
 resources:
   requests:

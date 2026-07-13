@@ -36,6 +36,9 @@ secrets:
   MONGO_URI: "mongodb://mongodb:27017/enterprise_app"
   JWT_SECRET: "dev-secret"
 
+externalSecrets:
+  enabled: false
+
 resources:
   requests:
     memory: "128Mi"
